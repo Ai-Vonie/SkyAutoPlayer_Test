@@ -75,6 +75,9 @@ def play_song(notes: list[dict], player: Player, key_mapping: dict, play_cb: Pla
         prev_note_time = grouped_notes[0][0]
     
     for i, (current_time, note_group) in enumerate(grouped_notes):
+        if conf.stop_end:
+            return None
+        
         wait_time = (current_time - prev_note_time) / 1000
         if wait_time < 0:
             continue

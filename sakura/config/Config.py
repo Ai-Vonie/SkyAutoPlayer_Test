@@ -1,5 +1,4 @@
-
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class Player(BaseModel):
@@ -25,3 +24,4 @@ class Config(BaseModel):
     player: Player
     mapping: Mapping
     control: Control
+    stop_end: bool = Field(default=False, exclude=True)

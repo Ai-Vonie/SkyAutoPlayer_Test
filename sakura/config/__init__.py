@@ -20,4 +20,7 @@ def load_conf() -> Config:
     return Config(**data)
 
 
+def set_stop_end(value: bool):
+    conf.stop_end = value
+
 conf = load_conf()
