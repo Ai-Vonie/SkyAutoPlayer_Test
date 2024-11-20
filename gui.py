@@ -1,4 +1,6 @@
 import sys
+import os
+import signal
 
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QApplication
@@ -53,8 +55,12 @@ class Window(FluentWindow):
         save_conf(conf)
         for item in children_windows:
             item.close()
+        logger.info("Closing application")
         shutdown_logger()
         super().closeEvent(event)
+        
+        current_pid = os.getpid()
+        os.kill(current_pid, signal.SIGTERM)
 
 
 if __name__ == '__main__':
@@ -68,4 +74,3 @@ if __name__ == '__main__':
     w.move(x, y)
     w.show()
     app.exec()
-
