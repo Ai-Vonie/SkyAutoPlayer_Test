@@ -10,7 +10,15 @@ from sakura import children_windows
 from sakura.components.ui.Home import Home
 from sakura.components.ui.PlayerUi import PlayerUi
 from sakura.components.ui.Settings import SettingsUi
-from sakura.config import conf, save_conf
+from sakura.config import conf, save_conf, set_stop_end
+from sakura.config.sakura_logging import logger
+
+
+def shutdown_logger():
+    logger.info("Shutting down logger")
+    for handler in logger.handlers[:]:
+        handler.close()
+        logger.removeHandler(handler)
 
 
 class Window(FluentWindow):
@@ -41,10 +49,12 @@ class Window(FluentWindow):
         self.setWindowTitle('Sky Auto Player')
 
     def closeEvent(self, event):
-        super().closeEvent(event)
+        set_stop_end(True)
         save_conf(conf)
         for item in children_windows:
             item.close()
+        shutdown_logger()
+        super().closeEvent(event)
 
 
 if __name__ == '__main__':
@@ -58,3 +68,4 @@ if __name__ == '__main__':
     w.move(x, y)
     w.show()
     app.exec()
+
